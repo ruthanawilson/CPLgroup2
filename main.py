@@ -1,8 +1,12 @@
+import scanner
+
 # TODO: 1. Open and Read file
+scan_obj = scanner.Scanner()
 
 fileIn = open("BASICcode.txt", "r")
-print(fileIn.read())
-
+basic_code = fileIn.read()
+words = basic_code.split()
+  
 # Big part after this print statement where we will validate tokens and count.
 
 # TODO: 2. Write to existing output file
@@ -11,7 +15,10 @@ print(fileIn.read())
 
 fileOut = open("output.txt", "w")
 # Will need a format for the information we will write to the file.
-fileOut.write("PLACEHOLDER FOR SOME SHIT WE WILL ADD LATER")
+for word in words:
+  token = scan_obj.lookup(word)
+  if bool(token):
+    fileOut.write(token)
 
 
 print(fileOut.read())
