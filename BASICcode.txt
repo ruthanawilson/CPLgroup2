@@ -1,22 +1,17 @@
-TEXT : HOME : PR#0
- ‘ This is a comment 
- INPUT "Enter text 1 to 80 characters long: ";S$
+TEXT
+ HOME
+ REM This is a comment 
+ PRINT "Enter text 1 to 80 characters long: "
+ INPUT S$
  L = LEN(S$)
  IF L = 0 OR L > 80 GOTO 10
- LET WIDTH = 40 : REM screen width
- IF L > 30 THEN PR#3 : WIDTH=80
+ WIDTH = 40 
+ IF L > 30 THEN PR#3
+ WIDTH=80
  HOME : REM clear screen
- VTAB 12 : HTAB INT((WIDTH-L)/2)
  PRINT S$
 
-‘-------------------------------------
 
- LET D = 1 : F = 10
- FOR N=1 TO F STEP D
- LET S = S + N
- PRINT N,S,F
- LET D = D + 1 : F = F + 1
- NEXT N
- PRINT : REM print empty line
- PRINT "Final sum:";S
+ FOR N=1 TO 10 STEP 1
+ PRINT N
  END
