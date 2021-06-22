@@ -44,7 +44,7 @@ class Scanner:
 
     def check_keywords(self, lexeme):
         if lexeme not in self.tokens.keys():
-            return [alse, None]
+            return [False, None]
         else:
             token = self.tokens[lexeme]
             return [True, token]
