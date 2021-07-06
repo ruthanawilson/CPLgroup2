@@ -6,6 +6,7 @@
 
 class Scanner:
     def __init__(self):
+        self.fileIn = open(filename, "r")
         self.count = 0
         self.tokens = {
             "TEXT"  : 10,
