@@ -114,7 +114,7 @@ class Scanner:
                 self.get_char()
             self.add_char()
             self.get_char()
-            self.next_token = 300
+            self.next_token = 170
         
             
 
