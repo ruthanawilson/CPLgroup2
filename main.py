@@ -21,10 +21,11 @@ def main():
   fileOut = open("output.txt", "w")
   # Will need a format for the information we will write to the file.
   
-  while scan_obj.next_token != 900
+  while scan_obj.next_token != 900:
     scan_obj.get_token()
     token = scan_obj.next_token
     fileOut.write(str(token))
+    fileOut.write(" " + scan_obj.lexeme)
     fileOut.write("\n")        #print("wrote " + str(token) + " to file")
   fileOut.close()
 

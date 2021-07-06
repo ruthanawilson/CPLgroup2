@@ -3,16 +3,18 @@
 #Name:        Ruthana, Jorge, Seth
 #Instructor:   Deepa Muralidhar 
 #Project:  Deliverable 1 Scanner - Python
+import string
+
 
 class Scanner:
-    def __init__(self):
+    def __init__(self, filename):
         self.fileIn = open(filename, "r")
         self.count = 0
         self.char_type = 89
         self.lexeme = ""
         self.next_char = ''
         self.next_token = 1
-        self.tokens = {
+        self.keywords = {
             "TEXT"  : 10,
             "HOME"  : 20,
             "REM"  : 30,
@@ -32,6 +34,7 @@ class Scanner:
         #  string literal : 170                special case 
             "END"  : 180,
             "LET"  : 190, 
+            "PR"   : 330
         }
         self.ops = {
             "+"  : 200,
@@ -46,6 +49,7 @@ class Scanner:
             ";"  : 290,
             ":"  : 300,
             "$"  : 310, 
+            "#"  : 320,
             }
     #gets the next character from the file, sets the character type 
     def get_char(self):
