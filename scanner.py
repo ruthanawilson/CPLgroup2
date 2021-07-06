@@ -8,6 +8,10 @@ class Scanner:
     def __init__(self):
         self.fileIn = open(filename, "r")
         self.count = 0
+        self.char_type = 89
+        self.lexeme = ""
+        self.next_char = ''
+        self.next_token = 1
         self.tokens = {
             "TEXT"  : 10,
             "HOME"  : 20,
