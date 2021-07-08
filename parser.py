@@ -1,5 +1,6 @@
-import tree
-import scanner
+import tree    #uses this for node structures
+import scanner   #parser takes a single scanner object as an argument
+
 
 def prnt_lines(*args):
     for arg in args:
@@ -13,11 +14,15 @@ class Parser:
     def __init__(self, scanner:scanner.Scanner):
         self.scanner = scanner
         self.ids = {}
-
+    
+    #the start of parsing
+    #assigns the first node to root and begins recursively
+    #adding nodes through prog()
     def parse(self):
         self.scanner.get_token()
         self.root = self.prog()
-
+    
+    #calls line method to parse new line nodes until it hits end of file (900)
     def prog(self):
         lines = ()
         while self.scanner.next_token != 900:
@@ -31,10 +36,13 @@ class Parser:
     def line(self):
         pass
 
-    
+    #the second part of a line node
+    #is multiple commands seperated by colons (300)
     def cmd_list(self):
         pass
-
+    
+    #each different type command in the basic language is parsed from here based 
+    #mostly on the keyword used like PRINT or IF
     def command(self):
         if self.scanner.next_token == 60:
             self.scanner.get_token()
@@ -45,11 +53,13 @@ class Parser:
         else:
             return self.assign()
 
-
+    #creates print statement node with an expression as a child
     def prnt_stmt(self):
         e = self.expr()
-        return tree.prntNode(e)
-
+        return tree.prntNode(e)  #must be added to tree.py file
+    
+    #creates variable node, checks for '=' symbol, calls expression method,
+    #returns assign node with variable node and expression node as children
     def assign(self):
         if self.scanner.next_token == 150:
             x = tree.var(self.scanner.lexeme)
@@ -57,19 +67,24 @@ class Parser:
             if self.scanner.next_token == 280:
                 self.scanner.get_token()
                 e = self.expr()
-                return tree.asgnNode(x,e)
+                return tree.asgnNode(x,e)  #TODO: add asgnNode to tree.py
             else:
-                print(" = sign expected after variable name")
+                print(" = sign expected after variable name")  
                 return None
-
+    
+    #calls condition method, checks for 'THEN' keyword
+    #calls expression method, returns ifNode
     def if_stmt(self):
         c = self.cond()
         if self.scanner.next_token != 100:
             return None
         self.scanner.get_token()
         e = self.expr()
-        return tree.ifNode(c,e)
-
+        return tree.ifNode(c,e) #TODO: add ifNode to tree.py
+    
+    #we don't need to handle logical ops, just relational '<,>,==,<=,>='
+    #returns condition node
+    #TODO: support recursive calling based on possible conditionals in BASIC
     def cond(self):
         self.scanner.get_token()
         return tree.boolean(True)
@@ -87,7 +102,9 @@ class Parser:
                 l = tree.subNode(l,r)
             else:
                 return l
-
+            
+    #calls factor method 
+    #returns either a factors or a mult/div node with two factors as children 
     def term(self):
         l = self.factor()
         while True:
