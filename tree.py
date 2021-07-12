@@ -36,6 +36,25 @@ def var(x):
 def boolean(x):
     return multiNode((x,None), "bool", lambda x, *args: str(x))
 
-#def 
+def asgnNode(c,e):
+    return multiNode((c,e), "=")
+
+def ifState(c,e):
+    return multiNode((c,e), "if")
+
+def muliply(x,y):
+    return multiNode((x,y), "*")
+
+def divide(x,y):
+    return multiNode((x,y), "/")
+
+def add(x,y):
+    return multiNode((x,y), "+")
+
+def sub(x,y):
+    return multiNode((x,y), "-")
+
+
+
 
 
