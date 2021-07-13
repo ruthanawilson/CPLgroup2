@@ -1,3 +1,9 @@
+#Class:       CS 4308 Section 01 
+#Term:        Summer 2021
+#Name:        Ruthana, Jorge, Seth
+#Instructor:   Deepa Muralidhar 
+#Project:  Deliverable 1 Scanner - Python
+
 class treeNode:
     def __init__(self):
         pass
