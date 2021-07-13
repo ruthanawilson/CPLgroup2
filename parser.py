@@ -44,14 +44,22 @@ class Parser:
     #each different type command in the basic language is parsed from here based 
     #mostly on the keyword used like PRINT or IF
     def command(self):
-        if self.scanner.next_token == 60:
+        if self.scanner.next_token == 800:
+            self.scanner.get_token()
+            return tree.multiNode((None,None), "Empty")
+        elif self.scanner.next_token == 60:
             self.scanner.get_token()
             return self.if_stmt()
         elif self.scanner.next_token == 110:
             self.scanner.get_token()
             return self.prnt_stmt()
-        else:
+        elif self.scanner.next_token == 190:
+            self.scanner.get_token()
             return self.assign()
+        elif self.scanner.next_token == 500:
+            return self.fun_stmnt()
+        elif self.scanner.next_token == 40:
+            return self.input_stmnt()
 
     #creates print statement node with an expression as a child
     def prnt_stmt(self):
@@ -82,12 +90,36 @@ class Parser:
         e = self.expr()
         return tree.ifNode(c,e) #TODO: add ifNode to tree.py
     
+    def fun_stmnt(self):
+        func_name = self.scanner.lexeme
+        self.scanner.get_token()
+        if self.scanner.next_token == 240:
+            self.scanner.get_token()
+            e = self.expr()
+            if self.scanner.next_token == 250:
+                return tree.multiNode((e,None), func_name )
+    
+    def input_stmnt(self):
+        x = self.var()
+        return tree.multiNode((x,None), "INPUT")
+    
     #we don't need to handle logical ops, just relational '<,>,==,<=,>='
     #returns condition node
     #TODO: support recursive calling based on possible conditionals in BASIC
     def cond(self):
-        self.scanner.get_token()
-        return tree.boolean(True)
+        l = self.expr()
+        if self.scanner.next_token == 260:
+            self.scanner.get_token()
+            r = self.expr()
+            return tree.multiNode((l,r), "<")
+        elif self.scanner.next_token == 270:
+            self.scanner.get_token()
+            r = self.expr()
+            return tree.multiNode((l,r), ">")
+        elif self.scanner.next_token == 280:
+            self.scanner.get_token()
+            r = self.expr()
+            return tree.multiNode((l,r), "=")
 
     def expr(self):
         l = self.term()
@@ -139,7 +171,17 @@ class Parser:
         else:
             print("Expected a number next to operation")
             return None
-
+        
+    def var(self):
+        x = self.scanner.lexeme
+        self.scanner.get_token()
+        return tree.var(x)
+    
+    def str_lit(self):
+        txt = self.scanner.lexeme
+        return tree.multiNode((txt, None), "string_literal")
+        
+        
     def integers(self):
         val = self.scanner.lexeme
         self.scanner.get_token()
