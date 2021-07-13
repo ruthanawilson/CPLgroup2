@@ -1,3 +1,9 @@
+#Class:       CS 4308 Section 01 
+#Term:        Summer 2021
+#Name:        Ruthana, Jorge, Seth
+#Instructor:   Deepa Muralidhar 
+#Project:  Deliverable 2 Parser - Python
+
 import tree    #uses this for node structures
 import scanner   #parser takes a single scanner object as an argument
 
