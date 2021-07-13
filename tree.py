@@ -2,7 +2,7 @@
 #Term:        Summer 2021
 #Name:        Ruthana, Jorge, Seth
 #Instructor:   Deepa Muralidhar 
-#Project:  Deliverable 1 Scanner - Python
+#Project:  Deliverable 2 Parser - Python
 
 class treeNode:
     def __init__(self):
