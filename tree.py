@@ -1,40 +1,26 @@
-class treeNode:
-    def __init__(self):
-        pass
-
-    def eval(self):
-        pass
-
-class multiNode(treeNode):
-    def __init__(self, chld_tuple : tuple, name, prnt_op):
+class multiNode:
+    def __init__(self, chld_tuple : tuple, name):
         self.name = name
         self.children = chld_tuple
-        self.prnt_op = prnt_op
-    
-    def prnt(self):
-        return self.prnt_op(*self.children)
 
     def show_nodes(self):
-        print(self.name + ":", end=" ")
+        name_string = self.name + " "
         for node in self.children:
-            if node != None and type(node) == multiNode:
-                print(node.name, end=" ")
-        print()
-        for node in self.children:
-            if node != None and type(node) == multiNode:
-                node.show_nodes() 
+            if type(node) != None:
+                name_string += node.name + " " 
+        return name_string
 
 def integer(x):
-    return multiNode((x, None), "int", lambda x, *args: str(x))    
+    return multiNode((x, None), "int")    
 
 def string(x):
-    return multiNode((x, None), "string", lambda x, *args: x)
+    return multiNode((x, None), "string")
 
 def var(x):
-    return multiNode((x, None), "variable", lambda x, *args: str(x))
+    return multiNode((x, None), "variable")
 
 def boolean(x):
-    return multiNode((x,None), "bool", lambda x, *args: str(x))
+    return multiNode((x,None), "bool")
 
 def asgnNode(c,e):
     return multiNode((c,e), "=")

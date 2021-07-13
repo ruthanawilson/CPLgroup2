@@ -32,9 +32,11 @@ class Scanner:
         #"single letter (variable)"  : "150",  special case so handled seperately
         #  "number"  : 160,                    special case handled seperately
         #  string literal : 170                special case 
-            "END"  : 180,
+            "END"  : 900,
             "LET"  : 190, 
-            "PR"   : 330
+            "PR"   : 330,
+            "DIM"  : 340,
+            "NEXT" : 350,
         }
         self.ops = {
             "+"  : 200,
@@ -51,6 +53,20 @@ class Scanner:
             "$"  : 310, 
             "#"  : 320,
             }
+
+        self.func_names = {
+            "ATN" : 360,
+            "COS" : 370,
+            "EXP" : 380,
+            "INT" : 390,
+            "LOG" : 400,
+            "RND" : 410,
+            "SIN" : 420,
+            "SQR" : 430,
+            "TAN" : 440, # currently we wont use these token numbers
+            #instead all function names will have token number 500
+        }
+
     #gets the next character from the file, sets the character type 
     def get_char(self):
         self.next_char = self.fileIn.read(1)
@@ -88,6 +104,8 @@ class Scanner:
                 self.get_token()
         elif self.lexeme in self.keywords.keys():
             self.next_token = self.keywords[self.lexeme]
+        elif self.lexeme in self.func_names.keys():
+            self.next_token = 500
         else:
             self.next_token = 150
 
@@ -101,6 +119,8 @@ class Scanner:
         if self.char_type == 900:
             return
         while self.next_char in string.whitespace:
+            if self.next_char == "\n":
+                return
             self.get_char()
 
     #currently only used for comments, continues 

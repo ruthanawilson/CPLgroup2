@@ -4,7 +4,7 @@ TEXT
  PRINT "Enter text 1 to 80 characters long: "
  INPUT S$
  L = LEN(S$)
- IF L = 0 OR L > 80 GOTO 10
+ IF L = 0 GOTO 10
  WIDTH = 40 
  IF L > 30 THEN PR#3
  WIDTH=80
