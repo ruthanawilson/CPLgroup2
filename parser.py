@@ -1,3 +1,9 @@
+#Class:       CS 4308 Section 01 
+#Term:        Summer 2021
+#Name:        Ruthana, Jorge, Seth
+#Instructor:   Deepa Muralidhar 
+#Project:  Deliverable 2 Parser - Python
+
 import tree    #uses this for node structures
 import scanner   #parser takes a single scanner object as an argument
 
@@ -138,7 +144,6 @@ class Parser:
             r = self.expr()
             return tree.multiNode((l,r), "=")
 
-
     def expr(self):
         l = self.term()
         while True:
@@ -208,6 +213,11 @@ class Parser:
         val = self.scanner.lexeme
         self.scanner.get_token()
         return tree.integer(int(val))
+    
+    def str_lit(self):
+        txt = self.scanner.lexeme
+        return tree.multiNode((txt, None), "string_literal")
+        
     
     def var(self):
         x = self.scanner.lexeme
