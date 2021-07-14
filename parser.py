@@ -11,13 +11,14 @@ class Parser:
     #adding nodes through prog()
     def parse(self):
         self.scanner.get_token()
-        self.root = self.line()
+        self.root = self.lines()
     
     def lines(self):
         l = self.line()
         while self.scanner.next_token != 900:
             r = self.line()
             l = tree.multiNode((l,r), "lines")
+        return l
     #call the different terminals and non-terminals found in a line
     #a line is a line number and a command list
     def line(self):
@@ -59,8 +60,9 @@ class Parser:
             self.scanner.get_token()
             return self.assign()
         elif self.scanner.next_token == 500:
-            return self.fun_stmnt()
+            return self.func_call()
         elif self.scanner.next_token == 40:
+            self.scanner.get_token()
             return self.input_stmnt()
 
     #creates print statement node with an expression as a child
@@ -71,6 +73,8 @@ class Parser:
                 self.scanner.get_token()
                 lit_2 = self.str_lit()
                 str_lit = tree.multiNode((str_lit, lit_2), "string")
+            else:
+                break
         return tree.prntNode(str_lit)  #must be added to tree.py file
     
     #creates variable node, checks for '=' symbol, calls expression method,
@@ -91,24 +95,28 @@ class Parser:
     #calls expression method, returns ifNode
     def if_stmt(self):
         c = self.cond()
-        if self.scanner.next_token != 100:
+        if self.scanner.next_token == 100:
+            self.scanner.get_token()
+            e = self.expr()
+            return tree.ifNode(c,e) #TODO: add ifNode to tree.py
+        else:
             print("expected THEN after IF condition")
             return None
-        self.scanner.get_token()
-        e = self.expr()
-        return tree.ifNode(c,e) #TODO: add ifNode to tree.py
+
     
-    def fun_stmnt(self):
+    def func_call(self):
         func_name = self.scanner.lexeme
         self.scanner.get_token()
         if self.scanner.next_token == 240:
             self.scanner.get_token()
             e = self.expr()
             if self.scanner.next_token == 250:
+                self.scanner.get_token()
                 return tree.multiNode((e,None), func_name )
 
     def input_stmnt(self):
         x = self.var()
+
         return tree.multiNode((x,None), "INPUT")
 
 
@@ -137,11 +145,11 @@ class Parser:
             if self.scanner.next_token == 200:
                 self.scanner.get_token()
                 r = self.term()
-                l = tree.addNode(l,r)
+                l = tree.add(l,r)
             elif self.scanner.next_token == 210:
                 self.scanner.get_token()
                 r = self.term()
-                l = tree.subNode(l,r)
+                l = tree.sub(l,r)
             else:
                 return l
             
@@ -153,26 +161,34 @@ class Parser:
             if self.scanner.next_token == 220:
                 self.scanner.get_token()
                 r = self.factor()
-                l = tree.multNode(l,r)
+                l = tree.muliply(l,r)
             elif self.scanner.next_token == 230:
                 self.scanner.get_token()
                 r = self.factor()
-                l = tree.divNode(l,r)
+                l = tree.divide(l,r)
             else:
                 return l
     
     def factor(self):
-        if self.scanner.next_token == 160:
+        if self.scanner.next_token == 160:  #number literal
             return self.num_literal()  
-        if self.scanner.next_token == 150:
+        if self.scanner.next_token == 150:  #variable
             return self.var()
-        if self.scanner.next_token == 210:
+        if self.scanner.next_token == 210:  #-(expr)
             self.scanner.get_token()
             if self.scanner.next_token == 240:
                 self.scanner.get_token()
                 e = self.expr()
-                
-        if self.scanner.next_token == 240:
+                if self.scanner.next_token == 250:
+                    self.scanner.get_token()
+                    return tree.multiNode((e,None), "negate")
+                else:
+                    print("Expected matching ')' to close '('")
+                    return None
+            else:
+                print("Expected (expression) after '-' with no operand")
+                return None
+        if self.scanner.next_token == 240:  # (expr)
             self.scanner.get_token()
             a = self.expr()
             if self.scanner.next_token == 250:
@@ -181,6 +197,9 @@ class Parser:
             else:
                 print("expected ) to close matching (")
                 return None
+        if self.scanner.next_token == 500:  #math function
+            f = self.func_call()
+            return f
         else:
             print("Expected a number next to operation")
             return None
@@ -197,12 +216,10 @@ class Parser:
     
     def str_lit(self):
         txt = self.scanner.lexeme
+        self.scanner.get_token()
         return tree.multiNode((txt, None), "string_literal")
 
 scan_obj = scanner.Scanner("BASIC_TEST_FILE.txt")
 prse = Parser(scan_obj)
 prse.parse()
-prse.root.show_nodes()
-        
-
-
+print(prse.root.show_nodes())

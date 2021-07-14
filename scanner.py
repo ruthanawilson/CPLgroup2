@@ -75,7 +75,9 @@ class Scanner:
         elif self.next_char.isdigit():
             self.char_type = 1
         elif self.next_char == "":
-            self.char_type = 900
+            self.char_type = 900   #end of file, 900 is also returned by END
+        elif self.next_char == "\n":
+            self.char_type == 800  #end of line
         else:
             self.char_type = 99
 
@@ -94,6 +96,10 @@ class Scanner:
             self.check_op(self.next_char)
         elif self.char_type == 900:
             self.next_token = 900
+        elif self.char_type == 800:
+            self.next_token = 800
+            self.add_char()
+            self.get_char()
 
     def handle_names(self):
         self.add_char()
@@ -118,9 +124,7 @@ class Scanner:
     def skip_whitespace(self):
         if self.char_type == 900:
             return
-        while self.next_char in string.whitespace:
-            if self.next_char == "\n":
-                return
+        while self.next_char in string.whitespace and self.char_type != 800:
             self.get_char()
 
     #currently only used for comments, continues 

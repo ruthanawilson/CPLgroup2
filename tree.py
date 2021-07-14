@@ -1,3 +1,6 @@
+
+
+
 class multiNode:
     def __init__(self, chld_tuple : tuple, name):
         self.name = name
@@ -6,8 +9,12 @@ class multiNode:
     def show_nodes(self):
         name_string = self.name + " "
         for node in self.children:
-            if type(node) != None:
-                name_string += node.name + " " 
+            if type(node) == int or type(node) == str:
+                name_string += str(node)
+            elif type(node) == multiNode:
+                name_string += node.show_nodes() + " " 
+            else:
+                name_string += "" 
         return name_string
 
 def integer(x):
@@ -22,10 +29,13 @@ def var(x):
 def boolean(x):
     return multiNode((x,None), "bool")
 
+def prntNode(l):
+    return multiNode((l,None), "print_statement" )
+
 def asgnNode(c,e):
     return multiNode((c,e), "=")
 
-def ifState(c,e):
+def ifNode(c,e):
     return multiNode((c,e), "if")
 
 def muliply(x,y):
