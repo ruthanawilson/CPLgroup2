@@ -5,16 +5,19 @@
 #Project:  Deliverable 2 Parser - Python
 
 import tree    #uses this for node structures
-import scanner   #parser takes a single scanner object as an argument
 
 class Parser:
-    def __init__(self, scanner:scanner.Scanner):
+    def __init__(self, scanner):
         self.scanner = scanner
         self.ids = {}
     
     #the start of parsing
     #assigns the first node to root and begins recursively
     #adding nodes through prog()
+
+    def display_preorder(self):
+        return self.root.show_nodes()
+
     def parse(self):
         self.scanner.get_token()
         self.root = self.lines()
@@ -228,8 +231,3 @@ class Parser:
         txt = self.scanner.lexeme
         self.scanner.get_token()
         return tree.multiNode((txt, None), "string_literal")
-
-scan_obj = scanner.Scanner("BASIC_TEST_FILE.txt")
-prse = Parser(scan_obj)
-prse.parse()
-print(prse.root.show_nodes())

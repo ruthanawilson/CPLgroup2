@@ -70,14 +70,14 @@ class Scanner:
     #gets the next character from the file, sets the character type 
     def get_char(self):
         self.next_char = self.fileIn.read(1)
-        if self.next_char.isalpha():
+        if self.next_char == '\n':
+            self.char_type = 800  #end of line
+        elif self.next_char.isalpha():
             self.char_type = 0
         elif self.next_char.isdigit():
             self.char_type = 1
         elif self.next_char == "":
             self.char_type = 900   #end of file, 900 is also returned by END
-        elif self.next_char == "\n":
-            self.char_type == 800  #end of line
         else:
             self.char_type = 99
 
@@ -125,6 +125,9 @@ class Scanner:
         if self.char_type == 900:
             return
         while self.next_char in string.whitespace and self.char_type != 800:
+            if self.next_char == '\n':
+                self.char_type = 800
+                return
             self.get_char()
 
     #currently only used for comments, continues 
@@ -132,7 +135,6 @@ class Scanner:
     def skip_line(self):
         while self.next_char != '\n':
             self.get_char()
-        self.get_char()
 
     def check_op(self, c):
         if c in self.ops.keys():
@@ -148,11 +150,15 @@ class Scanner:
             self.add_char()
             self.get_char()
             self.next_token = 170
+        else:
+            self.add_char()
+            self.next_token = 600
+            self.get_char()
         
             
 
     #continues to get characters if they are in condition list 
     def get_lexeme(self, conds):
-        while self.char_type in conds:
+        while self.char_type in conds or self.next_token == '.':
             self.add_char()
             self.get_char()
