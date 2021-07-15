@@ -10,13 +10,13 @@ import descent_parser
 # TODO: 1. Open and Read file
 def main():
   #scanner now handles file input directly through get_char function
-  basic_code = "BASIC_TEST_FILE.txt"
+  basic_code = "BASIC_Input_File_1.txt"
   scan_obj = scanner.Scanner(basic_code)
   prse = descent_parser.Parser(scan_obj)
   prse.parse()
   parse_tree_preorder = prse.display_preorder()
   # Big part after this print statement where we will validate tokens and count.
-
+  
   # TODO: 2. Write to existing output file
 
   # After counting we then overwrite the empty output file with a 'count' or whatever we decide to use.
