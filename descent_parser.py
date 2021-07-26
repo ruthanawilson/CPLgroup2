@@ -81,7 +81,7 @@ class Parser:
         elif self.scanner.next_token == 900:
             return tree.multiNode((None,None), "end_of_program")
         else:
-            print("command Keyword: " + self.scanner.lexeme + " not recognized")
+            #print("command Keyword: " + self.scanner.lexeme + " not recognized")
             while self.scanner.next_token != 800:
                 self.scanner.get_token()
             return None
