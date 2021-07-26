@@ -6,6 +6,13 @@
 
 import tree    #uses this for node structures
 
+#for nodes that simply call each sub-node in order
+def default_func(*args):
+    for arg in args:
+        if arg != None:
+            arg.eval()
+    #I added this here because a lot of these types of nodes: lines, line, cmd_lst, cmd dont have a dedicated function in tree.py
+
 class Parser:
     def __init__(self, scanner):
         self.scanner = scanner

@@ -59,6 +59,17 @@ def add(x,y):
 def sub(x,y):
     return multiNode((x,y), "-")
 
+def lookup(var_name):
+    if var_name not in var_table.keys():
+        print("missing var assignment, returning null")
+        return None
+    else:
+        return var_table[var_name]
+
+def assign(var_name, val):
+    var_table[var_name] = val
+
+var_table = {}
 
 
 
