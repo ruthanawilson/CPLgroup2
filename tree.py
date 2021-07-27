@@ -91,5 +91,21 @@ def multiplyEval(l,r):
 def divideEval(l,r):
        return l.eval() / r.eval()
 
+def integerEval(x):
+    return "int"    
 
+def stringEval(x):
+    return "string"
+
+def varEval(x):
+   return "variable"
+
+def booleanEval(x):
+    return  "bool"
+
+def numericEval(x):
+    return  "num"
+
+def floatingEval(x):
+    return  "float"
 
