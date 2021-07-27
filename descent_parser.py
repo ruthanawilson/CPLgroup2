@@ -2,7 +2,7 @@
 #Term:        Summer 2021
 #Name:        Ruthana, Jorge, Seth
 #Instructor:   Deepa Muralidhar 
-#Project:  Deliverable 2 Parser - Python
+#Project:  Deliverable 3 Interpreter - Python
 
 import tree    #uses this for node structures
 
