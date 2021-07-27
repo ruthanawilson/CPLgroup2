@@ -11,7 +11,7 @@ class treeNode:
 
 
 class multiNode:
-    def __init__(self, chld_tuple : tuple, name):
+    def __init__(self, chld_tuple : tuple, name, func):
         self.name = name
         self.children = chld_tuple
 
@@ -25,41 +25,46 @@ class multiNode:
             else:
                 name_string += "" 
         return name_string
+    
+    def eval():
+        l = chld_tuple[0]
+        r = chld_tuple[1]
+        return func(l,r)
 
 def integer(x):
-    return multiNode((x, None), "int")    
+    return multiNode((x, None), "int", integerEval)    
 
 def string(x):
-    return multiNode((x, None), "string")
+    return multiNode((x, None), "string", lambda x: None)
 
 def var(x):
-    return multiNode((x, None), "variable")
+    return multiNode((x, None), x, varEval)
 
 def boolean(x):
-    return multiNode((x,None), "bool")
+    return multiNode((x,None), "bool", lambda x: None)
 
 def prntNode(l):
-    return multiNode((l,None), "print_statement" )
+    return multiNode((l,None), "print_statement", printEval)
 
 def asgnNode(c,e):
-    return multiNode((c,e), "=")
+    return multiNode((c,e), "=", assignEval)
 
 def ifNode(c,e):
-    return multiNode((c,e), "if")
+    return multiNode((c,e), "if", lambda x: None)
 
 def muliply(x,y):
-    return multiNode((x,y), "*")
+    return multiNode((x,y), "*", multiplyEval)
 
 def divide(x,y):
-    return multiNode((x,y), "/")
+    return multiNode((x,y), "/", divideEval)
 
 def add(x,y):
-    return multiNode((x,y), "+")
+    return multiNode((x,y), "+", addEval)
 
 def sub(x,y):
-    return multiNode((x,y), "-")
+    return multiNode((x,y), "-", subEval)
 
-def lookup(var_name):
+def lookup(var_name, y):
     if var_name not in var_table.keys():
         print("missing var assignment, returning null")
         return None
@@ -71,11 +76,11 @@ def lookup(var_name):
 var_table = {}
 
 #assigns value to the lookup table
-def assignEval(var_name, val):
-    var_table[var_name] = val
+def assignEval(var, exp):
+    var_table[var.name] = exp.eval()
 
 #stores printed declaration into lookup table
-def printEval(strng):
+def printEval(strng, y):
     print(strng)
    
 #basic operations (add, subtract, multiply and divide)
@@ -91,21 +96,21 @@ def multiplyEval(l,r):
 def divideEval(l,r):
        return l.eval() / r.eval()
 
-def integerEval(x):
-    return "int"    
+def integerEval(x, y):
+    return int(x)    
 
-def stringEval(x):
-    return "string"
+def stringEval(x,y):
+    return int(x)
 
-def varEval(x):
-   return "variable"
+def varEval(x,y):
+   return lookup(x)
 
 def booleanEval(x):
     return  "bool"
 
 def numericEval(x):
-    return  "num"
+    return int(x)
 
 def floatingEval(x):
-    return  "float"
+    return  float(x)
 
