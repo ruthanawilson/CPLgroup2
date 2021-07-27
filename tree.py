@@ -2,7 +2,7 @@
 #Term:        Summer 2021
 #Name:        Ruthana, Jorge, Seth
 #Instructor:   Deepa Muralidhar 
-#Project:  Deliverable 2 Parser - Python
+#Project:  Deliverable 3 Interpreter - Python
 
 class treeNode:
     def __init__(self):
@@ -66,11 +66,30 @@ def lookup(var_name):
     else:
         return var_table[var_name]
 
-def assign(var_name, val):
-    var_table[var_name] = val
+
 
 var_table = {}
 
+#assigns value to the lookup table
+def assignEval(var_name, val):
+    var_table[var_name] = val
+
+#stores printed declaration into lookup table
+def printEval(strng):
+    print(strng)
+   
+#basic operations (add, subtract, multiply and divide)
+def addEval(l,r):
+       return l.eval() + r.eval()
+
+def subEval(l,r):
+       return l.eval() - r.eval()
+
+def multiplyEval(l,r):
+       return l.eval() * r.eval()
+
+def divideEval(l,r):
+       return l.eval() / r.eval()
 
 
 
