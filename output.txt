@@ -1,0 +1,1 @@
+lines lines lines lines lines line statements = WD WD int 20    line statements = LENG LENG int 40     line statements = PERIM PERIM + * WD WD int 2  * LENG LENG int 2       line statements = AREA AREA * WD WD LENG LENG      line statements print_statement PERIM PERIM     line statements print_statement AREA AREA    

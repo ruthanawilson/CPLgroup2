@@ -14,6 +14,7 @@ class multiNode:
     def __init__(self, chld_tuple : tuple, name, func):
         self.name = name
         self.children = chld_tuple
+        self.func = func
 
     def show_nodes(self):
         name_string = self.name + " "
@@ -26,10 +27,10 @@ class multiNode:
                 name_string += "" 
         return name_string
     
-    def eval():
-        l = chld_tuple[0]
-        r = chld_tuple[1]
-        return func(l,r)
+    def eval(self):
+        l = self.children[0]
+        r = self.children[1]
+        return self.func(l,r)
 
 def integer(x):
     return multiNode((x, None), "int", integerEval)    
@@ -64,7 +65,7 @@ def add(x,y):
 def sub(x,y):
     return multiNode((x,y), "-", subEval)
 
-def lookup(var_name, y):
+def lookup(var_name):
     if var_name not in var_table.keys():
         print("missing var assignment, returning null")
         return None
@@ -81,7 +82,7 @@ def assignEval(var, exp):
 
 #stores printed declaration into lookup table
 def printEval(strng, y):
-    print(strng)
+    print(strng.eval())
    
 #basic operations (add, subtract, multiply and divide)
 def addEval(l,r):

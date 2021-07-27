@@ -14,6 +14,7 @@ def main():
   scan_obj = scanner.Scanner(basic_code)
   prse = descent_parser.Parser(scan_obj)
   prse.parse()
+  prse.root.eval()
   parse_tree_preorder = prse.display_preorder()
   # Big part after this print statement where we will validate tokens and count.
   

@@ -7,10 +7,11 @@
 import tree    #uses this for node structures
 
 #for nodes that simply call each sub-node in order
-def default_func(*args):
-    for arg in args:
-        if arg != None:
-            arg.eval()
+def default_func(a,b):
+    if a != None:
+        a.eval()
+    if b != None:
+        b.eval()
     #I added this here because a lot of these types of nodes: lines, line, cmd_lst, cmd dont have a dedicated function in tree.py
 
 class Parser:
@@ -33,7 +34,7 @@ class Parser:
         l = self.line()
         while self.scanner.next_token != 900:
             r = self.line()
-            l = tree.multiNode((l,r), "lines")
+            l = tree.multiNode((l,r), "lines", default_func)
         return l
     #call the different terminals and non-terminals found in a line
     #a line is a line number and a command list
@@ -43,7 +44,7 @@ class Parser:
             cmd_list = self.cmd_list()
             if self.scanner.next_token == 800 or self.scanner.next_token == 900:
                 self.scanner.get_token()
-                return tree.multiNode((cmd_list,None), "line")
+                return tree.multiNode((cmd_list,None), "line", default_func)
             else:
                 print("expected end of line after no more commands were found")
                 return None
@@ -62,9 +63,9 @@ class Parser:
         if self.scanner.next_token == 300:
             self.scanner.get_token()
             lst = self.cmd_list()
-            return tree.multiNode((cmd_1, lst), "statements")
+            return tree.multiNode((cmd_1, lst), "statements", default_func)
         else:
-            return tree.multiNode((cmd_1, None), "statements" )
+            return tree.multiNode((cmd_1, None), "statements", default_func)
     
     #each different type command in the basic language is parsed from here based 
     #mostly on the keyword used like PRINT or IF
@@ -95,15 +96,8 @@ class Parser:
 
     #creates print statement node with an expression as a child
     def prnt_stmt(self):
-        str_lit = self.str_lit()
-        while True:
-            if self.scanner.next_token == 290:
-                self.scanner.get_token()
-                lit_2 = self.str_lit()
-                str_lit = tree.multiNode((str_lit, lit_2), "string")
-            else:
-                break
-        return tree.prntNode(str_lit)  #must be added to tree.py file
+        expr_1 = self.expr()
+        return tree.prntNode(expr_1)
     
     #creates variable node, checks for '=' symbol, calls expression method,
     #returns assign node with variable node and expression node as children
